@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards for Plugins">
+	<arg name="extensions" value="php" />
+
+	<file>.</file>
+
+	<rule ref="WordPress-Core">
+		<exclude name="Generic.Formatting.MultipleStatementAlignment" />
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment" />
+	</rule>
+
+	<rule ref="WordPress-Docs">
+		<exclude name="Squiz.Commenting.FileComment" />
+	</rule>
+
+	<exclude-pattern>/node_modules</exclude-pattern>
+	<exclude-pattern>/vendor</exclude-pattern>
+	<exclude-pattern>/dist/</exclude-pattern>
+	<exclude-pattern>/tools/</exclude-pattern>
+</ruleset>
