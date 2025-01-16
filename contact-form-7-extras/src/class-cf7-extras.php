@@ -12,7 +12,7 @@ class Cf7_Extras {
 	 *
 	 * @var string
 	 */
-	const ASSET_VERSION = '0.8.0';
+	const ASSET_VERSION = '0.9.0';
 
 	/**
 	 * Keep track of forms that have been rendered during the request.
@@ -34,6 +34,13 @@ class Cf7_Extras {
 	 * @var array
 	 */
 	protected $errors = array();
+
+	/**
+	 * Store instances of form settings by form ID.
+	 *
+	 * @var array
+	 */
+	protected $form_settings = array();
 
 	/**
 	 * Get the plugin singleton.
@@ -103,6 +110,16 @@ class Cf7_Extras {
 		// TODO: Enable Google analytics tracking when AJAX is disabled.
 		add_filter( 'wpcf7_form_elements', array( $this, 'maybe_reset_autop' ) );
 
+		$integrations = array(
+			new Cf7_Extras_Integration_TablePress(),
+		);
+
+		foreach ( $integrations as $integration ) {
+			if ( $integration instanceof Cf7_Extras_Integration ) {
+				$integration->init();
+			}
+		}
+
 		return true;
 	}
 
@@ -169,7 +186,7 @@ class Cf7_Extras {
 		$fields = array(
 			'extra-disable-ajax' => array(
 				'label' => __( 'AJAX Submissions', 'contact-form-7-extras' ),
-				'docs_url' => 'http://contactform7.com/controlling-behavior-by-setting-constants/',
+				'docs_url' => 'https://contactform7.com/controlling-behavior-by-setting-constants/',
 				'field' => sprintf(
 					'<label>
 						<input id="extra-disable-ajax" data-toggle-on=".extra-field-extra-track-ga, #extra-html5-fallback-wrap" name="extra[disable-ajax]" value="1" %s type="checkbox" />
@@ -183,7 +200,7 @@ class Cf7_Extras {
 			),
 			'extra-disable-css' => array(
 				'label' => __( 'Default CSS', 'contact-form-7-extras' ),
-				'docs_url' => 'http://contactform7.com/controlling-behavior-by-setting-constants/',
+				'docs_url' => 'https://contactform7.com/controlling-behavior-by-setting-constants/',
 				'field' => sprintf(
 					'<label>
 						<input id="extra-disable-css" name="extra[disable-css]" value="1" %s type="checkbox" />
@@ -197,7 +214,7 @@ class Cf7_Extras {
 			),
 			'extra-disable-autop' => array(
 				'label' => __( 'Automatic Formatting', 'contact-form-7-extras' ),
-				'docs_url' => 'http://contactform7.com/controlling-behavior-by-setting-constants/',
+				'docs_url' => 'https://contactform7.com/controlling-behavior-by-setting-constants/#autop',
 				'field' => sprintf(
 					'<label>
 						<input id="extra-disable-autop" name="extra[disable-autop]" value="1" %s type="checkbox" />
@@ -239,7 +256,7 @@ class Cf7_Extras {
 			),
 			'extra-redirect-success' => array(
 				'label' => __( 'Redirect to URL on Success', 'contact-form-7-extras' ),
-				'docs_url' => 'http://contactform7.com/redirecting-to-another-url-after-submissions/',
+				'docs_url' => 'https://formcontrols.com/docs/contact-form-7-redirect-url',
 				'field' => sprintf(
 					'<label>
 						<input type="text" class="wide large-text" id="extra-redirect-success" name="extra[redirect-success]" value="%s" placeholder="%s" />
@@ -265,7 +282,7 @@ class Cf7_Extras {
 			),
 			'extra-track-ga' => array(
 				'label' => __( 'Analytics Tracking', 'contact-form-7-extras' ),
-				'docs_url' => 'http://contactform7.com/tracking-form-submissions-with-google-analytics/',
+				'docs_url' => 'https://formcontrols.com/docs',
 				'field' => sprintf(
 					'<label>
 						<input type="checkbox" id="extra-track-ga" name="extra[track-ga]" value="1" %s />
@@ -330,6 +347,13 @@ class Cf7_Extras {
 				),
 			);
 		}
+
+		/**
+		 * Let plugins add items to the settings.
+		 *
+		 * @param array $fields List of fields to display.
+		 */
+		$fields = apply_filters( 'cf7_extras__controls_fields', $fields, $settings );
 
 		// Place the storage links on top.
 		$fields = array_merge(
@@ -479,53 +503,23 @@ class Cf7_Extras {
 	 *
 	 * @param  WPCF7_ContactForm $form Form object.
 	 * @param  string            $field Setting field id.
-	 * @param  boolean           $fresh Fetch a fresh value from the DB instead of cache.
+	 * @param  boolean           $fresh Not used.
 	 *
 	 * @return mixed
 	 */
 	public function get_form_settings( $form, $field = null, $fresh = false ) {
-		static $form_settings = array();
-
-		if ( isset( $form_settings[ $form->id() ] ) && ! $fresh ) {
-			$settings = $form_settings[ $form->id() ];
-		} else {
-			$settings = get_post_meta( $form->id(), 'extras', true );
+		if ( ! isset( $this->form_settings[ $form->id() ] ) ) {
+			$this->form_settings[ $form->id() ] = new Cf7_Extras_Form_Settings( $form ); // Cache it for re-use.
 		}
 
-		$settings = wp_parse_args(
-			$settings,
-			array(
-				'disable-css' => false,
-				'disable-ajax' => false,
-				'html5-disable' => false,
-				'html5-fallback' => false,
-				'disable-autop' => false,
-				'redirect-success' => false,
-				'track-ga-success' => false,
-				'track-ga-submit' => false,
-				'track-ga' => false,
-				'google-recaptcha-lang' => null,
-			)
-		);
-
-		// Cache it for re-use.
-		$form_settings[ $form->id() ] = $settings;
-
-		// Convert individual legacy settings into one.
-		if ( ! empty( $settings['track-ga-success'] ) || ! empty( $settings['track-ga-submit'] ) ) {
-			$settings['track-ga'] = true;
-		}
+		$settings = $this->form_settings[ $form->id() ];
 
 		// Return a specific field value.
 		if ( isset( $field ) ) {
-			if ( isset( $settings[ $field ] ) ) {
-				return $settings[ $field ];
-			} else {
-				return null;
-			}
+			return $settings->get( $field );
 		}
 
-		return $settings;
+		return $settings->all();
 	}
 
 
@@ -628,7 +622,7 @@ class Cf7_Extras {
 		wp_enqueue_script(
 			'cf7-extras',
 			$this->asset_url( 'assets/js/controls.js' ),
-			array( 'contact-form-7', 'jquery' ),
+			array( 'contact-form-7' ),
 			self::ASSET_VERSION,
 			true
 		);
