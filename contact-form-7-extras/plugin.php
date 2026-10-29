@@ -5,15 +5,21 @@
  * Plugin URI: https://formcontrols.com
  * Author: Kaspars Dambis
  * Author URI: https://formcontrols.com
- * Version: 0.10.0
+ * Version: 0.10.1
  * License: GPL2
  * Text Domain: contact-form-7-extras
  */
 
-require_once __DIR__ . '/src/class-cf7-extras-form-settings.php';
-require_once __DIR__ . '/src/class-cf7-extras-integration.php'; // Before all integrations.
-require_once __DIR__ . '/src/class-cf7-extras-integration-tablepress.php';
-require_once __DIR__ . '/src/class-cf7-extras.php';
+$plugin_files = array(
+	'class-cf7-extras-form-settings.php',
+	'class-cf7-extras-integration.php',
+	'class-cf7-extras-integration-tablepress.php',
+	'class-cf7-extras.php',
+);
+
+foreach ( $plugin_files as $file ) {
+	require_once __DIR__ . '/php/' . $file;
+}
 
 $plugin = Cf7_Extras::instance();
 $plugin->set_plugin_dir( __DIR__ );

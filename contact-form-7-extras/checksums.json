@@ -1,0 +1,42 @@
+{
+	"plugin": "contact-form-7-extras",
+	"version": "0.10.1",
+	"files": {
+		"assets/css/admin.css": {
+			"md5": "f813bd49ce104a2da9bda0864c534bcb",
+			"sha256": "d52130bb7e95fcffe4d29a7c198f2af310fdf91bdb835884fd645ab383190e20"
+		},
+		"assets/js/admin.js": {
+			"md5": "0b778688f9895dd4c308cb830315e86f",
+			"sha256": "c3ee539595c9f76fe26c62c0998fc4850eb6163470e87b5e40ea00e44cc41041"
+		},
+		"assets/js/controls.js": {
+			"md5": "2b4c322598aa2e1df2b5e6999b250b30",
+			"sha256": "5531ff583494a10e6c0185cdef24c76d60b172ddf555f3e7c48654428a2d69e6"
+		},
+		"php/class-cf7-extras-form-settings.php": {
+			"md5": "dccb5261ea6a9755e7b6553683b218e2",
+			"sha256": "c0a8a33eca29bd70cd204aa444707998c72eb773f23a631cbfaaac1a231414e0"
+		},
+		"php/class-cf7-extras-integration-tablepress.php": {
+			"md5": "06f59e38403500cee41131e6cec54e3f",
+			"sha256": "1af1a6dddb271fb96f505eb8e43037da0288598ecf441707b26824fd43b9232a"
+		},
+		"php/class-cf7-extras-integration.php": {
+			"md5": "5e8d2de150b8eac4b9eef7baa32f181d",
+			"sha256": "e76ee081ed63503643060ed0d18dbce5ed78bb5768b88ac8e8bcc5e11bfcd298"
+		},
+		"php/class-cf7-extras.php": {
+			"md5": "8550721be65083602881027f33914e62",
+			"sha256": "3fb0d1bdc6e8eae0f17cdc57e31f995e22dbc4d1d28830e387312df615e2264a"
+		},
+		"plugin.php": {
+			"md5": "7a6311700b3be002b1a1fd8ba47a699f",
+			"sha256": "2cf7efedcb188efc95b3594951e304d4a7add25f743acc375085c10c8f143912"
+		},
+		"readme.txt": {
+			"md5": "ce7595ddc3f6fae9861a23a9c8f77951",
+			"sha256": "fe094a4ebdbed174006e00b6f1c77101c6e6bc0d53e93be22a7eabc5d61cfd03"
+		}
+	}
+}
