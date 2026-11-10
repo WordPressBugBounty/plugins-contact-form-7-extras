@@ -1,6 +1,6 @@
 {
 	"plugin": "contact-form-7-extras",
-	"version": "0.10.1",
+	"version": "0.10.2",
 	"files": {
 		"assets/css/admin.css": {
 			"md5": "f813bd49ce104a2da9bda0864c534bcb",
@@ -19,8 +19,8 @@
 			"sha256": "c0a8a33eca29bd70cd204aa444707998c72eb773f23a631cbfaaac1a231414e0"
 		},
 		"php/class-cf7-extras-integration-tablepress.php": {
-			"md5": "06f59e38403500cee41131e6cec54e3f",
-			"sha256": "1af1a6dddb271fb96f505eb8e43037da0288598ecf441707b26824fd43b9232a"
+			"md5": "9e8a627ff42fd6aa2380868a0a018781",
+			"sha256": "f5f8aa998f96e8d9e70bba1115fdbf9faa3b56cba0dcc1c7b9b03ca9861fb197"
 		},
 		"php/class-cf7-extras-integration.php": {
 			"md5": "5e8d2de150b8eac4b9eef7baa32f181d",
@@ -31,12 +31,12 @@
 			"sha256": "3fb0d1bdc6e8eae0f17cdc57e31f995e22dbc4d1d28830e387312df615e2264a"
 		},
 		"plugin.php": {
-			"md5": "7a6311700b3be002b1a1fd8ba47a699f",
-			"sha256": "2cf7efedcb188efc95b3594951e304d4a7add25f743acc375085c10c8f143912"
+			"md5": "9449b8cee43b5875bb518a8f51a6c009",
+			"sha256": "f7f89f0b5110c4d84d7fbc45781df2846b16a6d7d19a23dcebd2030f99cf1e0e"
 		},
 		"readme.txt": {
-			"md5": "ce7595ddc3f6fae9861a23a9c8f77951",
-			"sha256": "fe094a4ebdbed174006e00b6f1c77101c6e6bc0d53e93be22a7eabc5d61cfd03"
+			"md5": "c72477d2294909b924a038e6f8e35630",
+			"sha256": "ced4ec9b41e7ba42f8a5278d87c402d54b50c68b1939e58d74ccb09694510dc1"
 		}
 	}
 }
